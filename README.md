@@ -104,12 +104,46 @@ public class Main {
 
 ### Definition
 
-Objects of a superclass should be replaceable with objects of its subclasses without affecting correctness.
+Objects of a superclass should be replaceable with objects of its subclasses without affecting program correctness.
 
 ### Purpose
 
-* Ensures proper inheritance usage
+* Ensures safe inheritance
 * Prevents unexpected behavior
+* Promotes reliable polymorphism
+
+### Real-World Example
+
+Both `FullTimeEmployee` and `PartTimeEmployee` can replace the parent `Employee` type without breaking application behavior.
+
+```java
+// 3. Liskov Substitution Principle (LSP)
+class Employee {
+    public void work() {
+        System.out.println("Employee is working");
+    }
+}
+class FullTimeEmployee extends Employee {
+    @Override
+    public void work() {
+        System.out.println("Full Time Employee is working 8 hours");
+    }
+}
+class PartTimeEmployee extends Employee {
+    @Override
+    public void work() {
+        System.out.println("Part Time Employee is working 4 hours");
+    }
+}
+class Main {
+    public static void main(String[] args) {
+        Employee emp1 = new FullTimeEmployee();
+        Employee emp2 = new PartTimeEmployee();
+        emp1.work();
+        emp2.work();
+    }
+}
+```
 
 ---
 
@@ -121,41 +155,50 @@ Clients should not be forced to depend on interfaces they do not use.
 
 ### Purpose
 
-* Avoids unnecessary methods
 * Creates smaller and focused interfaces
+* Reduces unnecessary implementation
+* Improves maintainability
 
 ### Real-World Example
 
-A remote developer may work and eat but may not need travel functionality.
+A robot does not need eating functionality, so it should not implement an unnecessary method.
 
 ```java
-// 3. Liskov Substitution Principle (LSP)
-// 4. Interface Segregation Principle (ISP) (This example demonstrates both LSP and ISP)
-interface Employee { void work(); void eat(); }
-interface Travel { void travel(); }
-class Developer implements Employee, Travel {
-    @Override
-    public void work() { System.out.println("Developer is working"); }
-    @Override
-    public void eat() { System.out.println("Developer is eating"); }
-    @Override
-    public void travel() { System.out.println("Developer is traveling"); }
+// 4. Interface Segregation Principle (ISP)
+interface Workable {
+    void work();
 }
-class RemoteDeveloper implements Employee {
+interface Eatable {
+    void eat();
+}
+class HumanWorker implements Workable, Eatable {
     @Override
-    public void work() { System.out.println("Remote Developer is working"); }
+    public void work() {
+        System.out.println("Human is working");
+    }
     @Override
-    public void eat() { System.out.println("Remote Developer is eating"); }
+    public void eat() {
+        System.out.println("Human is eating");
+    }
+}
+class RobotWorker implements Workable {
+    @Override
+    public void work() {
+        System.out.println("Robot is working");
+    }
 }
 class Main {
     public static void main(String[] args) {
-        Developer dev = new Developer();
-        dev.work(); dev.eat(); dev.travel();
-        Employee remoteDev = new RemoteDeveloper();
-        remoteDev.work(); remoteDev.eat();
+        HumanWorker human = new HumanWorker();
+        human.work();
+        human.eat();
+
+        RobotWorker robot = new RobotWorker();
+        robot.work();
     }
 }
 ```
+
 
 ---
 
@@ -440,11 +483,3 @@ public class Main {
 # Author
 
 ## Habibur Rahman
-
-* Backend Developer
-* Laravel Developer
-* Full Stack Web Developer
-* Problem Solver
-
-GitHub Repository:
-[Design-Pattern-SOLID Repository](https://github.com/rahmanhabib0005/Design-Pattern-SOLID?utm_source=chatgpt.com)
